@@ -224,7 +224,10 @@
   (lambda (lista)
     (elegirMayor
      (resumirLista (listarEquipos lista) empty)
-     (list 'noHayEquipoMayor 0))))
+     (list 'noHayEquipoMayor 0)
+     )
+    )
+  )
 
 ;/////////////////////////////////////////////////////////////////////////////////////////////////
 ; PUNTO 3
@@ -253,7 +256,10 @@
       [(null? listPartidos) 0]
       [(partido? (car listPartidos))
        (+ (partido-goles1(car listPartidos)) (partido-goles2(car listPartidos)) (numeroGoles (cdr listPartidos)))]
-      [else "algo raro pasó"])))
+      [else "algo raro pasó"]
+      )
+    )
+  )
 
 
 ;PUNTO 5
@@ -264,6 +270,11 @@
       [(null? listPartidos) 0]
       [(equal? (partido-equipo1 (car listPartidos)) equipo) (+ (partido-puntos1 (car listPartidos)) (puntosEquipo (cdr listPartidos) equipo))]
       [(equal? (partido-equipo2 (car listPartidos)) equipo) (+ (partido-puntos2 (car listPartidos)) (puntosEquipo (cdr listPartidos) equipo))]
+      [else (puntosEquipo (cdr listPartidos) equipo)]
+      )
+    )
+  )
+
 
 ;PUNTO 6
 ;numero mas grande de goles entre todos los partidos de parte de un equipo
