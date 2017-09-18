@@ -265,8 +265,16 @@
 ;PUNTO 5
 
 (define puntosEquipo
-  (lambda (listaPartidos equipo)
-    (sumarPuntos equipo (listarEquipos listaPartidos))))
+  (lambda (listPartidos equipo)
+    (cond
+      [(null? listPartidos) 0]
+      [(equal? (partido-equipo1 (car listPartidos)) equipo) (+ (partido-puntos1 (car listPartidos)) (puntosEquipo (cdr listPartidos) equipo))]
+      [(equal? (partido-equipo2 (car listPartidos)) equipo) (+ (partido-puntos2 (car listPartidos)) (puntosEquipo (cdr listPartidos) equipo))]
+      [else (puntosEquipo (cdr listPartidos) equipo)]
+      )
+    )
+  )
+
 
 ;PUNTO 6
 ;numero mas grande de goles entre todos los partidos de parte de un equipo
