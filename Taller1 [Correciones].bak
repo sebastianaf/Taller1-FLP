@@ -11,6 +11,10 @@
           [(equal? forma 'rectangulo) (* base altura)]
           [else 0])))
 
+;;Pruebas
+(check-expect (calcularArea 2 0 'cuadrado) 4)
+(check-expect (calcularArea 4 5 'triangulo) 10)
+(check-expect (calcularArea 10 2 'rectangulo) 20)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 2];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;calcularFibonacci: number --> number
@@ -22,6 +26,11 @@
         (if (= numero 0) 0
             (if (= numero 1) 1
                 (printf "error"))))))
+
+;;Pruebas
+(check-expect (calcularFibonacci 0) 0)
+(check-expect (calcularFibonacci 6) 8)
+(check-expect (calcularFibonacci 9) 34)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 3];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;calculadoa: list --> number
@@ -38,6 +47,11 @@
             [(equal? operacion '/) (operar / (rest lista) 1)]
             [else "Error de escritura"]))))
 
+;;Pruebas
+(check-expect (calculadora (list '* 10 (list '+ 2 3) 4)) 200)
+(check-expect (calculadora (list '/ (list '+ 5 2 3) 5)) 2)
+(check-expect (calculadora (list '- (list '* 3 3 2) 8)) 10)
+(check-expect (calculadora (list - 18 8)) "Error de escritura")
 
 ;operar: procedure list number --> number
 ;Dada una operacion, una lista de numeros y un numero que corresponde al modulo de la operacion que se desea organizar
@@ -54,6 +68,11 @@
                primerElemento)
            (operar operacion (rest lista) modulo))))))
 
+;;Pruebas
+(check-expect (operar + (list 2 3 4) 0) 9)
+(check-expect (operar + (list 1 (list '- 5 2) 1) 0) 5)
+(check-expect (operar * (list 3 4) 1) 12)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 4A];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;buscar: var list --> boolean
@@ -67,6 +86,10 @@
               [(list? (car lista)) (buscar variable (car lista))]
               [else (buscar variable (rest lista))]))))
 
+;;Pruebas
+(check-expect (buscar 'hola (list 'hola 'chao 'buenas)) #t)
+(check-expect (buscar 2 (list 10 20 55 10 15 2)) #t)
+(check-expect (buscar ":)" (list ":v" ":')" "xD")) #f)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 4B];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;sustraer: var list --> list
@@ -80,6 +103,11 @@
           (cond [(equal? variable primerElementoLista) (sustraer variable (rest lista))]
                 [(list? primerElementoLista) (list (sustraer variable primerElementoLista))]
                 [else (cons primerElementoLista (sustraer variable (rest lista)))])))))
+
+;;Pruebas
+(check-expect (sustraer 'hola (list 'hola 'chao 'buenas)) (list 'chao 'buenas))
+(check-expect (sustraer 2 (list 10 20 55 10 15 2)) (list 10 20 55 10 15))
+(check-expect (sustraer ":)" (list ":v" ":')" "xD")) (list ":v" ":')" "xD"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -123,6 +151,11 @@
                           (listarEquipos (rest listaPartidos))))
               "Error, se encontró al menos un dato inesperado")))))
 
+;;Pruebas
+(check-expect (listarEquipos partidos)
+              (list (list 'america 3) (list 'cali 0)
+                    (list 'medellin 1) (list 'nacional 1)
+                    (list 'america 0) (list 'nacional 3)))
 
 ;sumarPuntos: symbol list --> number
 
@@ -138,6 +171,14 @@
         (if (equal? equipo (car (car listaEquipos)))
             (+ (cadr (car listaEquipos)) (sumarPuntos equipo (rest listaEquipos)))
             (sumarPuntos equipo (rest listaEquipos))))))
+
+;;Pruebas
+(check-expect (sumarPuntos 'america (listarEquipos partidos))
+              3)
+(check-expect (sumarPuntos 'cali (listarEquipos partidos))
+              0)
+(check-expect (sumarPuntos 'nacional (listarEquipos partidos))
+              4)
 
 ;resumirLista: list list --> list
 
@@ -156,6 +197,16 @@
                   (resumirLista (rest lista) (cons (car (car lista)) auxLista)))))))
 
 
+;;Pruebas
+(check-expect (resumirLista
+               (list (list 'america 3) (list 'cali 0)
+                     (list 'medellin 1) (list 'nacional 1)
+                     (list 'america 0) (list 'nacional 3)) empty)
+
+              (list (list 'america 3) (list 'cali 0)
+                    (list 'medellin 1) (list 'nacional 4)))
+
+
 ;elegirMayor: list --> symbol
 
 ;Dada  una lista de partidos retorna el equipo que obtuvo más puntos en total
@@ -170,6 +221,13 @@
             (elegirMayor (rest lista) auxMejorEquipo)))))
 
 
+;;Pruebas
+(check-expect (elegirMayor (list (list 'barcelona 1) (list 'real 3) (list 'cali 4))
+                           (list 'equiposAux 0))
+              'cali)
+(check-expect (elegirMayor (resumirLista (listarEquipos partidos) empty) (list 'Aux 0))
+              'nacional)
+
 ;equipoMayor : list --> symbol
 ;Dada una lista de partidos retorna el nombre del equipo con mayor puntaje,
 ;en caso de que hayan varios con la misma cantidad de puntos, retorna solo uno
@@ -181,6 +239,13 @@
      (list 'noHayEquipoMayor 0))))
 
 
+;;Pruebas
+(check-expect (equipoMayor partidos) 'nacional)
+(check-expect (equipoMayor (list (make-partido 'real 'barcelona 3 0 6 0)
+                                 (make-partido 'manchester 'liverpool 1 1 2 2)
+                                 (make-partido 'chelsea 'real 3 0 2 1)
+                                 (make-partido 'liverpool 'barcelona 3 0 3 0)))
+              'liverpool)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 3];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;numeroEmpates: list --> num
@@ -195,6 +260,15 @@
       [else (numeroEmpates (cdr listPartidos))])))
 
 
+;;Pruebas
+(check-expect (numeroEmpates partidos)
+              1)
+(check-expect (numeroEmpates (list (make-partido 'asenal 'chelsea 1 1 0 0)
+                                   (make-partido 'manchester 'bayer 1 1 3 3)
+                                   (make-partido 'barcelona 'juventus 3 0 4 1)
+                                   (make-partido 'PSG 'real 3 0 3 0)
+                                   (make-partido 'liverpool 'barcelona 0 3 1 2)))
+              2)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 4];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;numeroGoles: list --> num
@@ -207,7 +281,17 @@
        (+ (partido-goles1(car listPartidos)) (partido-goles2(car listPartidos)) (numeroGoles (cdr listPartidos)))]
       [else 0])))
 
-
+;;Pruebas
+(check-expect (numeroGoles partidos)
+              14)
+(check-expect (numeroGoles (list (make-partido 'asenal 'chelsea 1 1 0 0)
+                                   (make-partido 'manchester 'bayer 1 1 3 3)
+                                   (make-partido 'barcelona 'juventus 3 0 5 1)
+                                   (make-partido 'PSG 'real 3 0 3 0)
+                                   (make-partido 'liverpool 'chelsea 0 3 1 3)
+                                   (make-partido 'bayer 'barcelona 0 3 0 2)
+                                   (make-partido 'liverpool 'PSG 0 3 1 4)))
+              26)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 5];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;puntosEquipo: list symbol --> num
@@ -217,6 +301,16 @@
   (lambda (listaPartidos equipo)
     (sumarPuntos equipo (listarEquipos listaPartidos))))
 
+;;Pruebas
+(check-expect (puntosEquipo partidos 'cali)0)
+(check-expect(puntosEquipo partidos 'nacional)4)
+(check-expect (puntosEquipo
+               (list (make-partido 'real 'barcelona 0 3 1 5)
+                     (make-partido 'manchester 'liverpool 1 1 4 4)
+                     (make-partido 'chelsea 'real 1 1 1 1)
+                     (make-partido 'liverpool 'barcelona 0 3 0 3))
+               'barcelona)
+              6)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;[PUNTO 6];;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;auxMasGoles: list num --> num
@@ -240,3 +334,14 @@
 (define masGoles
   (lambda (listPartidos)
   (auxMasGoles listPartidos 0)))
+
+;;Pruebas
+(check-expect (masGoles (list (make-partido 'asenal 'chelsea 1 1 0 0)
+                              (make-partido 'juventus 'barcelona  3 0 7 1)
+                              (make-partido 'liverpool 'chelsea 0 3 1 3)
+                              (make-partido 'arsenal 'PSG 0 3 1 4)))
+              7)
+
+
+;Correr Pruebas
+(test)
