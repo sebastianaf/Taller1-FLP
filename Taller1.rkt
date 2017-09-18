@@ -12,10 +12,7 @@
     (cond [(equal? forma 'cuadrado) (expt base 2)]
           [(equal? forma 'triangulo) (/ (* base altura) 2)]
           [(equal? forma 'rectangulo) (* base altura)]
-          [else "Se produjo un error, verifique que la forma corresponda a un triangulo, cuadrado o rectangulo"]
-          )
-    )
-  )
+          [else "Se produjo un error, verifique que la forma corresponda a un triangulo, cuadrado o rectangulo"])))
 
 ;/////////////////////////////////////////////////////////////////////////////////////////////////
 ; PUNTO 2
@@ -47,10 +44,7 @@
             [(equal? operacion '-) (operar - (rest lista) 0)]
             [(equal? operacion '*) (operar * (rest lista) 1)]
             [(equal? operacion '/) (operar / (rest lista) 1)]
-            [else "Error de escritura"])
-      )
-    )    
-  )
+            [else "Error de escritura"]))))
 
 ;operar: procedure list number --> number
 ;Dada una operacion, una lista de numeros y un numero que corresponde al modulo de la operacion que se desea organizar
@@ -67,11 +61,7 @@
            (if (list? primerElemento)
                (calculadora primerElemento)
                primerElemento)
-           (operar operacion (rest lista) modulo))
-          )
-        )
-    )
-  )
+           (operar operacion (rest lista) modulo))))))
 
 
 ;/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,11 +79,7 @@
         #f
         (cond [(equal? variable (car lista)) #t]
               [(list? (car lista)) (buscar variable (car lista))]
-              [else (buscar variable (rest lista))])
-        )
-    )
-  )
-
+              [else (buscar variable (rest lista))]))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; SEGUNDA PARTE (PUNTO 4)
@@ -108,12 +94,7 @@
         (let ([primerElementoLista (car lista)])
           (cond [(equal? variable primerElementoLista) (sustraer variable (rest lista))]
                 [(list? primerElementoLista) (list (sustraer variable primerElementoLista))]
-                [else (cons primerElementoLista (sustraer variable (rest lista)))])
-          )
-      )
-    )
-  )
-
+                [else (cons primerElementoLista (sustraer variable (rest lista)))])))))
 
 ;/////////////////////////////////////////////////////////////////////////////////////////////////
 ; EQUIPOS DE FUTBOL
@@ -155,12 +136,7 @@
               (cons (list (partido-equipo1 partido) (partido-puntos1 partido))
                     (cons (list (partido-equipo2 partido) (partido-puntos2 partido))
                           (listarEquipos (rest listaPartidos))))
-              "Error, se encontró al menos un dato inesperado")
-          )
-        )
-    
-    )
-  )
+              "Error, se encontró al menos un dato inesperado")))))
 
 ;sumarPuntos: symbol list --> number
 
@@ -175,11 +151,7 @@
         0
         (if (equal? equipo (car (car listaEquipos)))
             (+ (cadr (car listaEquipos)) (sumarPuntos equipo (rest listaEquipos)))
-            (sumarPuntos equipo (rest listaEquipos))
-            )
-        )
-    )
-  )
+            (sumarPuntos equipo (rest listaEquipos)))
 
 ;resumirLista: list list --> list
 
@@ -194,10 +166,7 @@
         (if (buscar (car (car lista)) auxLista)
             (resumirLista (rest lista) auxLista)
             (cons (list (car (car lista)) (sumarPuntos (car (car lista)) lista))
-                  (resumirLista (rest lista) (cons (car (car lista)) auxLista))))
-        )
-    )
-  )
+                  (resumirLista (rest lista) (cons (car (car lista)) auxLista)))))
 
 ;elegirMayor: list --> symbol
 
@@ -209,13 +178,8 @@
         (car auxMejorEquipo)
         (if (< (cadr auxMejorEquipo) (cadr (car lista)))
             (elegirMayor (rest lista) (car lista))
-            (elegirMayor (rest lista) auxMejorEquipo)
-            )
-        )
-    )
-  )
-
-
+            (elegirMayor (rest lista) auxMejorEquipo)))))
+    
 ;equipoMayor : list --> symbol
 ;Dada una lista de partidos retorna el nombre del equipo con mayor puntaje,
 ;en caso de que hayan varios con la misma cantidad de puntos, retorna solo uno
@@ -239,10 +203,7 @@
       [(null? listPartidos) 0]
       [(= (partido-puntos1(car listPartidos)) 1)
        (+ 1 (numeroEmpates (cdr listPartidos)))]
-      [else (numeroEmpates (cdr listPartidos))]
-      )
-    )
-  )
+      [else (numeroEmpates (cdr listPartidos))])))
 
 
 ;PUNTO 4
@@ -264,6 +225,7 @@
       [(null? listPartidos) 0]
       [(equal? (partido-equipo1 (car listPartidos)) equipo) (+ (partido-puntos1 (car listPartidos)) (puntosEquipo (cdr listPartidos) equipo))]
       [(equal? (partido-equipo2 (car listPartidos)) equipo) (+ (partido-puntos2 (car listPartidos)) (puntosEquipo (cdr listPartidos) equipo))]
+      [else (puntosEquipo (cdr listPartidos) equipo)])))
 
 ;PUNTO 6
 ;numero mas grande de goles entre todos los partidos de parte de un equipo
@@ -280,12 +242,7 @@
                   )
               (if (> goles2 num)
                   (auxMasGoles (cdr listPartidos) goles2)
-                  (auxMasGoles (cdr listPartidos) num))
-                  )
-           )
-        )
-    )
-  )
+                  (auxMasGoles (cdr listPartidos) num)))))))
 
 (define masGoles
   (lambda (listPartidos)
